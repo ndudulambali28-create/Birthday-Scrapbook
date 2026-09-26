@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love! ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Handwritten & Aesthetic Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f7ede2;
+            background-image: radial-gradient(#e8d8c8 1px, transparent 1px);
+            background-size: 22px 22px;
+            color: #4a3e3d;
+            overflow-x: hidden;
+        }
+
+        .font-handwritten {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-romantic {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Scrapbook Washi Tape Effect */
+        .tape {
+            background-color: rgba(255, 255, 255, 0.65);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            backdrop-filter: blur(3px);
+            border: 1px dashed rgba(200,180,180,0.6);
+            position: absolute;
+            z-index: 10;
+        }
+        .tape-top-center {
+            width: 110px;
+            height: 28px;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+        }
+        .tape-top-left {
+            width: 90px;
+            height: 25px;
+            top: -10px;
+            left: -15px;
+            transform: rotate(-15deg);
+        }
+        .tape-top-right {
+            width: 90px;
+            height: 25px;
+            top: -10px;
+            right: -15px;
+            transform: rotate(15deg);
+        }
+
+        /* Flip Polaroid Cards */
+        .polaroid-card {
+            perspective: 1200px;
+            min-height: 380px;
+            cursor: pointer;
+        }
+        .polaroid-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .polaroid-card.flipped .polaroid-inner {
+            transform: rotateY(180deg);
+        }
+        .polaroid-front, .polaroid-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 4px;
+        }
+        
+        .polaroid-front {
+            background: #ffffff;
+            padding: 12px 12px 25px 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .polaroid-back {
+            background: #fff0f3;
+            padding: 20px;
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+            border: 2px dashed #f4acb7;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Paper Sticker Badge */
+        .sticker {
+            filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.15));
+            transition: transform 0.2s ease;
+        }
+        .sticker:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Book Overlay Transition */
+        #bookCoverOverlay {
+            perspective: 1500px;
+        }
+        #bookCover {
+            transform-origin: left center;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1.000), opacity 0.8s ease;
+        }
+        .book-open #bookCover {
+            transform: rotateY(-120deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7ede2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f4acb7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative pb-20">
+
+    <!-- Book Cover Intro Overlay -->
+    <div id="bookCoverOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-md transition-opacity duration-700">
+        <div id="bookCover" onclick="openBook()" class="w-full max-w-lg bg-gradient-to-br from-pink-100 via-rose-50 to-pink-200 border-8 border-pink-300 rounded-3xl p-8 md:p-12 shadow-2xl relative text-center cursor-pointer transform transition-all hover:scale-[1.02]">
+            <div class="tape tape-top-center"></div>
+            
+            <div class="text-6xl mb-4 animate-bounce" style="animation-duration: 2s;">🎁</div>
+            <span class="inline-block px-4 py-1.5 rounded-full bg-pink-200 text-pink-800 font-bold text-xs uppercase tracking-widest mb-4 border border-pink-300">
+                A Special Gift For You
+            </span>
+            <h1 class="font-romantic text-5xl md:text-6xl font-bold text-pink-700 mb-3">
+                Open Your Birthday Book ❤️
+            </h1>
+            <p class="font-handwritten text-2xl md:text-3xl text-stone-600 mb-8">
+                Click anywhere to open...
+            </p>
+
+            <button class="px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-400 text-white font-bold rounded-full shadow-lg hover:from-pink-600 hover:to-rose-500 transition-all text-lg flex items-center justify-center mx-auto gap-3">
+                <i class="fas fa-book-open"></i> Open Card ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Player (Background Music) -->
+    <div class="fixed bottom-4 right-4 z-40 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-xl border border-pink-200 flex items-center gap-3">
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            Your browser does not support audio elements.
+        </audio>
+        <button id="musicToggle" class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:bg-pink-600 transition shadow-md">
+            <i id="musicIcon" class="fas fa-play"></i>
+        </button>
+        <div class="text-left pr-2 hidden md:block">
+            <span class="block text-xs font-bold text-pink-600">Our Song 🎵</span>
+            <span class="text-xs font-semibold text-stone-600">The Only Reason - JP Cooper</span>
+        </div>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="relative pt-12 pb-8 text-center px-4">
+        <!-- Floating Stickers -->
+        <div class="absolute top-6 left-6 md:left-20 text-4xl sticker select-none animate-bounce" style="animation-duration: 3s;">🎈</div>
+        <div class="absolute top-10 right-6 md:right-20 text-4xl sticker select-none animate-pulse">🌙</div>
+
+        <span class="inline-block px-4 py-1.5 rounded-full bg-pink-100 text-pink-700 font-bold text-sm tracking-wide uppercase mb-3 border border-pink-200 shadow-sm">
+            October 2nd Birthday Special 🎂
+        </span>
+        <h1 class="font-romantic text-5xl md:text-7xl font-bold text-pink-700 mb-2">
+            Happy Birthday, My Love! ❤️
+        </h1>
+        <p class="font-handwritten text-2xl md:text-3xl text-stone-600 max-w-xl mx-auto">
+            "Every love story is beautiful, but ours is my absolute favorite"
+        </p>
+
+        <!-- Relationship Counter Box (Since March 15, 2025) -->
+        <div class="mt-8 max-w-lg mx-auto bg-white/80 backdrop-blur-sm p-6 rounded-3xl border-2 border-dashed border-pink-300 shadow-lg relative">
+            <div class="tape tape-top-center"></div>
+            <h3 class="font-romantic text-2xl text-pink-800 font-bold mb-1">How Long We've Been Together 💕</h3>
+            <p class="font-handwritten text-lg text-stone-500 mb-4">Since March 15, 2025</p>
+            
+            <div id="togetherCounter" class="grid grid-cols-4 gap-2 md:gap-3 text-center">
+                <div class="bg-pink-50 rounded-2xl p-2.5 border border-pink-100 shadow-sm">
+                    <span id="days" class="text-2xl md:text-3xl font-bold text-pink-600 block">0</span>
+                    <span class="text-xs text-stone-500 uppercase font-semibold">Days</span>
+                </div>
+                <div class="bg-pink-50 rounded-2xl p-2.5 border border-pink-100 shadow-sm">
+                    <span id="hours" class="text-2xl md:text-3xl font-bold text-pink-600 block">00</span>
+                    <span class="text-xs text-stone-500 uppercase font-semibold">Hours</span>
+                </div>
+                <div class="bg-pink-50 rounded-2xl p-2.5 border border-pink-100 shadow-sm">
+                    <span id="minutes" class="text-2xl md:text-3xl font-bold text-pink-600 block">00</span>
+                    <span class="text-xs text-stone-500 uppercase font-semibold">Mins</span>
+                </div>
+                <div class="bg-pink-50 rounded-2xl p-2.5 border border-pink-100 shadow-sm">
+                    <span id="seconds" class="text-2xl md:text-3xl font-bold text-pink-600 block">00</span>
+                    <span class="text-xs text-stone-500 uppercase font-semibold">Secs</span>
+                </div>
+            </div>
+
+            <!-- Surprise Button -->
+            <button onclick="openSurpriseModal()" class="mt-6 px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-400 text-white rounded-full font-bold shadow-lg hover:from-pink-600 hover:to-rose-500 transition-all transform hover:scale-105 text-base flex items-center justify-center mx-auto gap-2">
+                <i class="fas fa-gift text-lg animate-bounce"></i> Click if you dare!
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Scrapbook Layout -->
+    <main class="max-w-6xl mx-auto px-4 space-y-16 mt-8">
+
+        <!-- Polaroid Memory Gallery -->
+        <section>
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-pink-500 bg-pink-100 px-3 py-1 rounded-full">Interactive Photos</span>
+                <h2 class="font-romantic text-4xl text-pink-800 font-bold mt-2">Our Sweetest Memories 📸</h2>
+                <p class="font-handwritten text-2xl text-stone-600">Click on photos to take a closer look!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                
+                <!-- Polaroid 1 -->
+                <div class="polaroid-card" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front transform -rotate-2">
+                            <div class="tape tape-top-left"></div>
+                            <img src="Latita and Mbali.jpeg" 
+                                 alt="Our Beginning" 
+                                 class="w-full h-64 object-cover rounded-sm mb-3">
+                            <p class="font-handwritten text-2xl text-stone-700">Where it all started... ❤️</p>
+                            <span class="block text-xs text-pink-400 font-semibold mt-1">Tap to flip 🔄</span>
+                        </div>
+                        <div class="polaroid-back">
+                            <span class="text-3xl mb-2">✨</span>
+                            <h4 class="font-romantic text-2xl text-pink-700 font-bold mb-2">March 15, 2025</h4>
+                            <p class="font-handwritten text-2xl text-stone-700 leading-snug">
+                                "The day my life changed for the better. I still remember how nervous and excited I was when we first got together!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Polaroid 2 -->
+                <div class="polaroid-card" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front transform rotate-2">
+                            <div class="tape tape-top-right"></div>
+                            <img src="last birthday.jpeg" 
+                                 alt="Outdoor Celebration" 
+                                 class="w-full h-64 object-cover rounded-sm mb-3">
+                            <p class="font-handwritten text-2xl text-stone-700">Celebrating us 🎉</p>
+                            <span class="block text-xs text-pink-400 font-semibold mt-1">Tap to flip 🔄</span>
+                        </div>
+                        <div class="polaroid-back">
+                            <span class="text-3xl mb-2">🎈</span>
+                            <h4 class="font-romantic text-2xl text-pink-700 font-bold mb-2">Sweet Celebrations</h4>
+                            <p class="font-handwritten text-2xl text-stone-700 leading-snug">
+                                "Celebrating life's precious moments with you. No place I'd rather be than right beside you sharing sweet treats!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Polaroid 3 -->
+                <div class="polaroid-card" onclick="this.classList.toggle('flipped')">
+                    <div class="polaroid-inner">
+                        <div class="polaroid-front transform -rotate-1">
+                            <div class="tape tape-top-center"></div>
+                            <img src="pouting.jpeg" 
+                                 alt="Cute Selfies" 
+                                 class="w-full h-64 object-cover rounded-sm mb-3">
+                            <p class="font-handwritten text-2xl text-stone-700">Always silly together 🤪</p>
+                            <span class="block text-xs text-pink-400 font-semibold mt-1">Tap to flip 🔄</span>
+                        </div>
+                        <div class="polaroid-back">
+                            <span class="text-3xl mb-2">📸</span>
+                            <h4 class="font-romantic text-2xl text-pink-700 font-bold mb-2">Silly Moments</h4>
+                            <p class="font-handwritten text-2xl text-stone-700 leading-snug">
+                                "You make even simple selfies feel like unforgettable core memories. Thank you for making me smile every single day!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Song Spotlight Card -->
+        <section class="bg-gradient-to-r from-rose-100 to-pink-100 p-8 rounded-3xl border border-pink-200 shadow-md relative max-w-4xl mx-auto">
+            <div class="tape tape-top-center"></div>
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-pink-300 shadow-lg overflow-hidden flex-shrink-0 relative group">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80" alt="Music Cover" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <i class="fas fa-heart text-white text-3xl animate-pulse"></i>
+                    </div>
+                </div>
+                <div class="text-center md:text-left space-y-2">
+                    <span class="text-xs font-bold text-rose-500 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full">Our Song</span>
+                    <h3 class="font-romantic text-4xl font-bold text-stone-800">"The Only Reason"</h3>
+                    <p class="font-semibold text-rose-700 text-lg">by JP Cooper</p>
+                    <p class="font-handwritten text-2xl text-stone-600 leading-relaxed italic">
+                        "Every time this song plays, I think of us and all the sweet moments we share..."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spotify Embed Section -->
+        <section class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="font-romantic text-4xl text-pink-800 font-bold">Our Favourite Song 🎧</h2>
+                <p class="font-handwritten text-2xl text-stone-600">Press play to listen on Spotify!</p>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white p-4 rounded-2xl shadow-lg border border-stone-200 relative">
+                    <div class="tape tape-top-center"></div>
+                    <div class="rounded-xl overflow-hidden mb-3">
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3w1xg3rt6XZ8GLVuzmW5Vn?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
+                    <h4 class="font-romantic text-2xl text-stone-800 text-center">You're my only reason ✨</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Romantic Love Letter Section -->
+        <section class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-pink-100 relative max-w-3xl mx-auto">
+            <div class="tape tape-top-center"></div>
+            <div class="text-center mb-6">
+                <span class="text-3xl">💌</span>
+                <h2 class="font-romantic text-4xl text-pink-800 font-bold">My Birthday Letter To You</h2>
+            </div>
+            
+            <div class="font-handwritten text-2xl md:text-3xl text-stone-700 leading-relaxed space-y-4">
+                <p>Dearest Birthday Boy,</p>
+                <p>
+                    Happy Birthday! On this 2nd of October, I want to remind you how deeply loved and appreciated you are. Since March 15, 2025, every day spent with you has been an absolute gift.I wanted to give you something as unique and thoughtful as you are to me. Thank you for filling my life with endless warmth, laughter, and happiness.
+                </p>
+                <p>
+                    Thank you for being my rock, my biggest laugh, and my safest space. I hope this new year of your life brings you all the happiness, success, and joy you deserve.
+                </p>
+                <p class="text-right pt-4">Forever yours,<br><span class="text-pink-600 font-bold">uBhabha Wakho ❤️</span></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Surprise Modal (I love you to the moon and back) -->
+    <div id="surpriseModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl relative border-4 border-pink-200 transform scale-90 transition-transform duration-300" id="modalContent">
+            <button onclick="closeSurpriseModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-xl w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="text-6xl mb-4 animate-bounce">🌙✨</div>
+            <h3 class="font-romantic text-4xl font-bold text-pink-700 mb-4">My Special Message</h3>
+            <p class="font-handwritten text-3xl text-stone-800 leading-relaxed font-bold bg-pink-50 p-4 rounded-2xl border border-pink-200 shadow-inner">
+                "I love you to the moon and back!" 💖
+            </p>
+            <p class="font-handwritten text-xl text-stone-500 mt-4">
+                Happy Birthday, my handsome man! 🥰
+            </p>
+            <button onclick="closeSurpriseModal()" class="mt-6 px-6 py-2.5 bg-pink-500 text-white font-bold rounded-full hover:bg-pink-600 shadow-md">
+                Close With Love ❤️
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 text-center text-stone-500 font-handwritten text-2xl">
+        <p>Made with all my love for your birthday on October 2nd 🎉</p>
+    </footer>
+
+    <script>
+        // Book Opening Logic
+        function openBook() {
+            const overlay = document.getElementById('bookCoverOverlay');
+            overlay.classList.add('book-open');
+
+            // Trigger initial celebration confetti on open
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.5 },
+                colors: ['#f4acb7', '#ffb703', '#e63946', '#ff4d6d']
+            });
+
+            // Fade out overlay element after animation completes
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        }
+
+        // Audio Toggle Logic
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.className = 'fas fa-play';
+            } else {
+                bgMusic.play();
+                musicIcon.className = 'fas fa-pause';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Relationship Counter Logic (Since March 15, 2025)
+        function updateRelationshipCounter() {
+            const startDate = new Date('2025-03-15T00:00:00');
+
+            function calc() {
+                const now = new Date();
+                const diff = now - startDate;
+
+                if (diff < 0) {
+                    document.getElementById('days').innerText = "0";
+                    document.getElementById('hours').innerText = "00";
+                    document.getElementById('minutes').innerText = "00";
+                    document.getElementById('seconds').innerText = "00";
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / (1000 * 60)) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('days').innerText = d;
+                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+            }
+
+            calc();
+            setInterval(calc, 1000);
+        }
+
+        // Surprise Modal Control
+        function openSurpriseModal() {
+            const modal = document.getElementById('surpriseModal');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-90');
+            content.classList.add('scale-100');
+
+            // Trigger Heart Confetti
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#f4acb7', '#ffb703', '#e63946', '#ff4d6d']
+            });
+        }
+
+        function closeSurpriseModal() {
+            const modal = document.getElementById('surpriseModal');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-90');
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            updateRelationshipCounter();
+        };
+    </script>
+</body>
+</html>
